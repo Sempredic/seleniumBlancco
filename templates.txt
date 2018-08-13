@@ -1,0 +1,8 @@
+2
+3
+iPhone 5s 16GB (ATT)
+Status: Erased
+Fingerprint: Pass
+2
+iPhone 6s 32GB (T-MOBILE)
+Status: Failed
