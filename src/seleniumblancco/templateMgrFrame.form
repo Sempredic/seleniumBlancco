@@ -56,7 +56,7 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="268" max="-2" attributes="0"/>
                   <Component id="editApplyButton" min="-2" pref="77" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -67,17 +67,12 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jPanel4" max="32767" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="editApplyButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jPanel2" max="32767" attributes="0"/>
+                      <Component id="jPanel4" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="editApplyButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -93,20 +88,24 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="assignedCriteriaList" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                              <Component id="assCriteriaAddButton" min="-2" pref="57" max="-2" attributes="0"/>
-                              <EmptySpace pref="30" max="32767" attributes="0"/>
-                              <Component id="assCriteriaDelButton" min="-2" pref="56" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="assignedCriteriaList" max="32767" attributes="0"/>
+                                  <Component id="areaTempLabel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="assignedCriteriaLabel" alignment="0" pref="179" max="32767" attributes="0"/>
+                                  <Component id="assTempNameField" alignment="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
-                          <Component id="assTempNameField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="areaTempLabel" alignment="0" max="32767" attributes="0"/>
-                          <Component id="assignedCriteriaLabel" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="assCriteriaAddButton" min="-2" pref="57" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="assCriteriaDelButton" min="-2" pref="56" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -122,13 +121,13 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="assignedCriteriaLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="assignedCriteriaList" min="-2" pref="190" max="-2" attributes="0"/>
+                      <Component id="assignedCriteriaList" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="assCriteriaAddButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="assCriteriaDelButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -137,6 +136,7 @@
             <Component class="javax.swing.JTextField" name="assTempNameField">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="assTempNameField.setEnabled(false);"/>
@@ -199,7 +199,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="existingListLabel" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="existingTempList" pref="170" max="32767" attributes="0"/>
+                              <Component id="existingTempList" pref="229" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="editTempButton" alignment="0" max="32767" attributes="0"/>
@@ -219,16 +219,19 @@
                       <Component id="existingListLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="existingTempList" alignment="0" min="-2" pref="293" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Component id="createTempButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="editTempButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="deleteTempButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="222" pref="314" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="existingTempList" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

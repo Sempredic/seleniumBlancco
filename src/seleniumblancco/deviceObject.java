@@ -20,6 +20,7 @@ public class deviceObject {
     deviceObject(String deviceName){
         this.deviceName = deviceName;
         this.elements = new LinkedHashMap<Object,LinkedHashMap<Object,Object>>();
+        isMatch = true;
     }
     
     public String getName(){

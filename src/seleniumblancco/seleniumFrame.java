@@ -114,6 +114,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         serialDataArea.setRows(5);
         jScrollPane1.setViewportView(serialDataArea);
 
+        serialLists.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         serialLists.setModel(listModel);
         serialLists.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -521,6 +522,8 @@ public class seleniumFrame extends javax.swing.JFrame {
                         }        
                     }
                 }
+            }else{
+                current.setMatchBoolean(false);
             }   
         }        
         

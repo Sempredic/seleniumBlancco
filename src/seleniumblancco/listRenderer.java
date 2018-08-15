@@ -39,7 +39,12 @@ public class listRenderer implements ListCellRenderer<deviceObject>{
                 renderer.setBackground(Color.RED);
             }
         }else{
-            renderer.setBackground(Color.YELLOW);
+            if(device.getMatchBoolean()){
+                renderer.setBackground(Color.YELLOW);
+            }else{
+                renderer.setBackground(Color.RED);
+            }
+            
         }
         
         return renderer;
