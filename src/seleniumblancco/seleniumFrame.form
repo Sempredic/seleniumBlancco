@@ -85,8 +85,8 @@
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                   <Component id="serialList" min="-2" pref="174" max="-2" attributes="0"/>
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="174" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" pref="252" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -148,6 +148,9 @@
           </SubComponents>
         </Container>
         <Component class="java.awt.List" name="serialList">
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="serialListItemStateChanged"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
@@ -159,6 +162,9 @@
             <Component class="javax.swing.JTextArea" name="serialDataArea">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI Emoji" size="12" style="0"/>
+                </Property>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
             </Component>

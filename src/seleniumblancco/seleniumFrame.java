@@ -101,7 +101,14 @@ public class seleniumFrame extends javax.swing.JFrame {
                 .addContainerGap(268, Short.MAX_VALUE))
         );
 
+        serialList.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                serialListItemStateChanged(evt);
+            }
+        });
+
         serialDataArea.setColumns(20);
+        serialDataArea.setFont(new java.awt.Font("Segoe UI Emoji", 0, 12)); // NOI18N
         serialDataArea.setRows(5);
         jScrollPane1.setViewportView(serialDataArea);
 
@@ -114,8 +121,8 @@ public class seleniumFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47)
                 .addComponent(serialList, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
                 .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
@@ -186,7 +193,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         int keyCode = evt.getKeyCode();
         if(keyCode == KeyEvent.VK_ENTER){
             
-            if(serialNumberField.getText().trim().equals("VALIDATE")){
+            if(serialNumberField.getText().trim().toUpperCase().equals("VALIDATE")){
                 runSelenium();
                 System.out.println("Validate!");
                 serialNumberField.setText("");
@@ -205,6 +212,21 @@ public class seleniumFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         mgrFrame.setVisible(true);
     }//GEN-LAST:event_editTempMgrItemActionPerformed
+
+    private void serialListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_serialListItemStateChanged
+        // TODO add your handling code here:
+        String selectedSerial = serialList.getSelectedItem();
+        StringBuilder builder = new StringBuilder();
+        
+        if(serialObjects.containsKey(selectedSerial)){
+            for(Object item:serialObjects.get(selectedSerial).entrySet()){
+                builder.append(item+"\n");
+            }
+            serialDataArea.setText("");
+            serialDataArea.setText(builder.toString());
+        }
+
+    }//GEN-LAST:event_serialListItemStateChanged
 
     private void runSelenium(){
         
