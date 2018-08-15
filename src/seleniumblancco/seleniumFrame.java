@@ -9,8 +9,11 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javax.swing.DefaultListModel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -29,12 +32,16 @@ public class seleniumFrame extends javax.swing.JFrame {
     ArrayList<String> serialListArray;
     templateMgrFrame mgrFrame;
     LinkedHashMap<Object,LinkedHashMap<Object,Object>> serialObjects;
+    DefaultListModel<deviceObject> listModel;
     
     public seleniumFrame() {
+        listModel = new DefaultListModel<>();
         initComponents();
         serialListArray = new ArrayList<String>();
         mgrFrame = new templateMgrFrame();
         serialObjects = new LinkedHashMap<Object,LinkedHashMap<Object,Object>>();
+        serialLists.setCellRenderer(new listRenderer());
+
     }
 
     /**
@@ -50,9 +57,10 @@ public class seleniumFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         caseField = new javax.swing.JTextField();
         serialNumberField = new javax.swing.JTextField();
-        serialList = new java.awt.List();
         jScrollPane1 = new javax.swing.JScrollPane();
         serialDataArea = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        serialLists = new javax.swing.JList<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         editTempMgrItem = new javax.swing.JMenuItem();
@@ -98,41 +106,43 @@ public class seleniumFrame extends javax.swing.JFrame {
                 .addComponent(caseField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(serialNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        serialList.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                serialListItemStateChanged(evt);
-            }
-        });
 
         serialDataArea.setColumns(20);
         serialDataArea.setFont(new java.awt.Font("Segoe UI Emoji", 0, 12)); // NOI18N
         serialDataArea.setRows(5);
         jScrollPane1.setViewportView(serialDataArea);
 
+        serialLists.setModel(listModel);
+        serialLists.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                serialListsValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(serialLists);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(27, 27, 27)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(serialList, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
                 .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
+                .addContainerGap(62, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(serialList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(48, 48, 48))
         );
 
@@ -157,7 +167,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -165,8 +175,8 @@ public class seleniumFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 19, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,7 +210,7 @@ public class seleniumFrame extends javax.swing.JFrame {
             }else if(!serialListArray.contains(serialNumberField.getText())){
                 if(serialNumberField.getText().length()>0){
                     serialListArray.add(serialNumberField.getText());
-                    serialList.add(serialNumberField.getText());
+                    listModel.addElement(new deviceObject(serialNumberField.getText()));
                     serialNumberField.setText("");
                 }
                 
@@ -213,20 +223,45 @@ public class seleniumFrame extends javax.swing.JFrame {
         mgrFrame.setVisible(true);
     }//GEN-LAST:event_editTempMgrItemActionPerformed
 
-    private void serialListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_serialListItemStateChanged
+    private void serialListsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_serialListsValueChanged
         // TODO add your handling code here:
-        String selectedSerial = serialList.getSelectedItem();
+        String selectedSerial = serialLists.getSelectedValue().getName();
+        deviceObject device = serialLists.getSelectedValue();
         StringBuilder builder = new StringBuilder();
         
-        if(serialObjects.containsKey(selectedSerial)){
-            for(Object item:serialObjects.get(selectedSerial).entrySet()){
-                builder.append(item+"\n");
+        serialDataArea.setText("");
+        
+        if(!device.getElementMap().isEmpty()){
+            for(Map.Entry<Object,LinkedHashMap<Object,Object>> item:device.getElementMap().entrySet()){
+                if(item.getKey().equals("BD")){
+                    builder.append("BD REPORT \n");
+                    builder.append("\n");
+                    for(Object crit:item.getValue().entrySet()){
+                        builder.append(crit+"\n");
+                    }
+                    builder.append("\n");
+                }else if(item.getKey().equals("ER")){
+                    builder.append("ERASURE REPORT \n");
+                    builder.append("\n");
+                    for(Object crit:item.getValue().entrySet()){
+                        builder.append(crit+"\n");
+                    }
+                    builder.append("\n");
+                }else if(item.getKey().equals("FR")){
+                    builder.append("FACTORY REPORT \n");
+                    builder.append("\n");
+                    for(Object crit:item.getValue().entrySet()){
+                        builder.append(crit+"\n");
+                    }
+                    builder.append("\n");
+                }
             }
-            serialDataArea.setText("");
             serialDataArea.setText(builder.toString());
+        }else{
+            serialDataArea.setText("--NO REPORTS--");
         }
 
-    }//GEN-LAST:event_serialListItemStateChanged
+    }//GEN-LAST:event_serialListsValueChanged
 
     private void runSelenium(){
         
@@ -256,6 +291,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                 driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
                 driver.findElement(By.id("reportFiltering_searchInput")).clear();
                 driver.findElement(By.id("reportFiltering_searchInput")).sendKeys((String)serials);
+                sleep(1000);
                 driver.findElement(By.id("reportFiltering_searchInput")).sendKeys(Keys.RETURN);
                 
                 sleep(3000);
@@ -369,15 +405,14 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp.put(cameraL, cameraN);
                         temp.put(multiTouchL, multiTouchN);
                         temp.put(btmMicL, btmMicN);
-                                 
-                        if(!serialObjects.containsKey(serialN)){
-                            serialObjects.put(serialN, temp);
-                        }else if(serialObjects.containsKey(serialN)){
-                            if(!serialObjects.get(serialN).containsKey(overallL)){
-                                serialObjects.get(serialN).put("BD", temp);
+
+                        for(int i=0;i<listModel.getSize();i++){                          
+                            deviceObject current = listModel.getElementAt(i);
+                            if(current.getName().equals(serialN)){
+                                current.getElementMap().put("BD", temp);
+                                break;
                             }
                         }
-                        
 
                     }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Data Erasure Report")){
                         
@@ -399,11 +434,14 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp.put(serialL, serialN);
                         temp.put(statusL, statusN);
                         
-                        if(!serialObjects.containsKey(serialN)){
-                            serialObjects.put(serialN, temp);
-                        }else{
-                            serialObjects.get(serialN).put("ER", temp);                        
+                        for(int i=0;i<listModel.getSize();i++){                          
+                            deviceObject current = listModel.getElementAt(i);
+                            if(current.getName().equals(serialN)){
+                                current.getElementMap().put("ER", temp);
+                                break;
+                            }
                         }
+                        
                     }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Factory Reset Report")){
                         
                         System.out.println("Factory Reset ER Info");
@@ -424,12 +462,13 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp.put(serialL, serialN);
                         temp.put(statusL, statusN);
                         
-                        if(!serialObjects.containsKey(serialN)){
-                            serialObjects.put(serialN, temp);
-                        }else{
-                            serialObjects.get(serialN).put("ER", temp);                        
-                        }
-                        
+                        for(int i=0;i<listModel.getSize();i++){                          
+                            deviceObject current = listModel.getElementAt(i);
+                            if(current.getName().equals(serialN)){
+                                current.getElementMap().put("FR", temp);
+                                break;
+                            }
+                        }  
                     }
 
                     driver.close();
@@ -444,6 +483,7 @@ public class seleniumFrame extends javax.swing.JFrame {
             System.out.println(e.toString());
         }
         
+        serialLists.repaint();
         System.out.println("SUCCESS!!!!");
         driver.quit();
         
@@ -498,8 +538,9 @@ public class seleniumFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea serialDataArea;
-    private java.awt.List serialList;
+    private javax.swing.JList<deviceObject> serialLists;
     private javax.swing.JTextField serialNumberField;
     // End of variables declaration//GEN-END:variables
 }
