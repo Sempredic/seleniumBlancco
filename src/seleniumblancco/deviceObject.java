@@ -26,7 +26,7 @@ public class deviceObject {
         return this.deviceName;
     }
     
-    public boolean isMatch(){
+    public boolean getMatchBoolean(){
         return this.isMatch;
     }
     

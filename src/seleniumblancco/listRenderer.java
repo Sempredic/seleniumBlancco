@@ -31,9 +31,13 @@ public class listRenderer implements ListCellRenderer<deviceObject>{
         isSelected, hasFocus);
         
         renderer.setText(device.getName());
-        
+ 
         if(!device.getElementMap().isEmpty()){
-            renderer.setBackground(Color.GREEN);
+            if(device.getMatchBoolean()){
+                renderer.setBackground(Color.GREEN);
+            }else{
+                renderer.setBackground(Color.RED);
+            }
         }else{
             renderer.setBackground(Color.YELLOW);
         }

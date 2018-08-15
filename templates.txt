@@ -1,8 +1,7 @@
 2
-3
-iPhone 5s 16GB (ATT)
-Status: Erased
+2
+iPad 5th Gen Wi-Fi 32GB Gold
 Fingerprint: Pass
 2
-iPhone 6s 32GB (T-MOBILE)
-Status: Failed
+iPhone 6S Plus GSM+CDMA 64GB Space Gray
+Fingerprint:Pass

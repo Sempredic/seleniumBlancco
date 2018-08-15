@@ -279,6 +279,10 @@ public class templateMgrFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public LinkedHashMap<String,deviceTemplate> getTemplateMap(){
+        return templateMap;
+    }
+    
     private void assCriteriaDelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assCriteriaDelButtonActionPerformed
         // TODO add your handling code here:
         
@@ -557,8 +561,7 @@ public class templateMgrFrame extends javax.swing.JFrame {
     }
     
     void commitAssCriteriaList(){
-        
-        
+
         for(String criteria:assCriteriaListArray){
             String[] crit = criteria.split(":");
             templateMap.get(existingTempList.getSelectedItem()).addCriteriaType(crit[0], crit[1]);

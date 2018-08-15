@@ -483,7 +483,6 @@ public class seleniumFrame extends javax.swing.JFrame {
             System.out.println(e.toString());
         }
         
-        serialLists.repaint();
         System.out.println("SUCCESS!!!!");
         driver.quit();
         
@@ -492,6 +491,40 @@ public class seleniumFrame extends javax.swing.JFrame {
     
     private void validateSerialObjects(){
         
+        String deviceName = null;
+        String reportType = null;
+            
+        for(int i=0;i<listModel.getSize();i++){        
+            
+            deviceObject current = listModel.getElementAt(i);
+            
+            if(!current.getElementMap().isEmpty()){
+                if(current.getElementMap().containsKey("BD")){
+                    reportType = "BD";
+                }else if(current.getElementMap().containsKey("ER")){
+                    reportType = "ER";
+                }else if(current.getElementMap().containsKey("FR")){
+                    reportType = "FR";
+                }
+               
+                
+                deviceName = (String)current.getElementMap().get(reportType).get("Model:");
+                
+                if(mgrFrame.getTemplateMap().containsKey(deviceName)){
+                    for(Map.Entry<String,String> crit:mgrFrame.getTemplateMap().get(deviceName).getCriteria().entrySet()){
+                        System.out.println(crit.getValue());
+                        System.out.println(current.getElementMap().get(reportType).get(crit.getKey()+":"));
+                        if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
+                            current.setMatchBoolean(true);
+                        }else{
+                            current.setMatchBoolean(false);
+                        }        
+                    }
+                }
+            }   
+        }        
+        
+        serialLists.repaint();
     }
 
     public void run(){
