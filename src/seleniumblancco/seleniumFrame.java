@@ -322,10 +322,15 @@ public class seleniumFrame extends javax.swing.JFrame {
                         //title
                         System.out.println("BD Info");
                         //first section
-                        String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-                        String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();
+                        
                         String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
                         String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
+                        if(!serialL.equals("Serial:")){
+                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
+                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
+                        }
+                        String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
+                        String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
                         String erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
                         String erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
                         String fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
@@ -513,8 +518,6 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 if(mgrFrame.getTemplateMap().containsKey(deviceName)){
                     for(Map.Entry<String,String> crit:mgrFrame.getTemplateMap().get(deviceName).getCriteria().entrySet()){
-                        System.out.println(crit.getValue());
-                        System.out.println(current.getElementMap().get(reportType).get(crit.getKey()+":"));
                         if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
                             current.setMatchBoolean(true);
                         }else{

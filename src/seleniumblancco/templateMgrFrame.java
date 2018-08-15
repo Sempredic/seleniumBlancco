@@ -454,7 +454,7 @@ public class templateMgrFrame extends javax.swing.JFrame {
                 editTempButton.setText("Cancel Edit");
 
             }else{
-                JOptionPane.showMessageDialog(this,"Select an Existing Area","Try Again", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Select an Existing Template","Try Again", JOptionPane.WARNING_MESSAGE);
             }
         }else{
             updateAssignedCriteriaList(templateMap.get(existingTempList.getSelectedItem()));
@@ -494,7 +494,7 @@ public class templateMgrFrame extends javax.swing.JFrame {
         existingTempList.setEnabled(true);
         existingListLabel.setEnabled(true);
 
-        editTempButton.setText("Edit Area");
+        editTempButton.setText("Edit Template");
 
         writeTemplatesToFile();
 

@@ -1,7 +1,44 @@
-2
-2
+14
+3
 iPad 5th Gen Wi-Fi 32GB Gold
-Fingerprint: Pass
+Fingerprint:Pass
+Headphhones:Pass
 2
 iPhone 6S Plus GSM+CDMA 64GB Space Gray
+Fingerprint:Pass
+2
+iPhone 7 Plus GSM+CDMA 32GB Gold
+Fingerprint:Pass
+2
+iPhone 5S GSM 16GB Silver
+Fingerprint:Pass
+2
+iPhone SE GSM+CDMA 32GB Silver
+Fingerprint:Pass
+2
+iPhone X GSM+CDMA 64GB Silver
+Fingerprint:N/A
+2
+iPhone X GSM+CDMA 256GB Silver
+Fingerprint:N/A
+2
+iPhone 7 Plus GSM 128GB Jet Black
+Fingerprint:Pass
+2
+iPhone 7 GSM+CDMA 32GB Rose Gold
+Fingerprint:Pass
+2
+iPhone 8 Plus GSM+CDMA 64GB Gold
+Fingerprint:Pass
+2
+iPhone 8 GSM+CDMA 64GB Space Gray
+Fingerprint:Pass
+2
+iPhone X GSM+CDMA 256GB Space Gray
+Fingerprint:N/A
+2
+iPhone 8 GSM+CDMA 64GB Red
+Fingerprint:Pass
+2
+iPhone 6 32GB
 Fingerprint:Pass
