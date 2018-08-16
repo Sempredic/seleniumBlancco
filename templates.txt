@@ -1,4 +1,4 @@
-17
+21
 3
 iPad 5th Gen Wi-Fi 32GB Gold
 Fingerprint:Pass
@@ -54,3 +54,15 @@ Fingerprint:Fail
 HeadphoneJack:Fail
 FaceID:N/A
 WirelessCharging:N/A
+2
+iPhone X GSM+CDMA 64GB Space Gray
+Fingerprint:Pass
+2
+iPhone 8 GSM+CDMA 256GB Silver
+Fingerprint:Pass
+2
+iPhone 7 Plus GSM+CDMA 32GB Black
+Fingerprint:Pass
+2
+iPhone 8 Plus GSM+CDMA 64GB Silver
+Fingerprint:Pass
