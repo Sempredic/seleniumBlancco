@@ -33,6 +33,7 @@ public class seleniumFrame extends javax.swing.JFrame {
     templateMgrFrame mgrFrame;
     LinkedHashMap<Object,LinkedHashMap<Object,Object>> serialObjects;
     DefaultListModel<deviceObject> listModel;
+    LinkedHashMap<Object,ArrayList> errorObjects;
     
     public seleniumFrame() {
         listModel = new DefaultListModel<>();
@@ -41,6 +42,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         mgrFrame = new templateMgrFrame();
         serialObjects = new LinkedHashMap<Object,LinkedHashMap<Object,Object>>();
         serialLists.setCellRenderer(new listRenderer());
+        errorObjects = new LinkedHashMap<Object,ArrayList>();
 
     }
 
@@ -57,10 +59,13 @@ public class seleniumFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         caseField = new javax.swing.JTextField();
         serialNumberField = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        serialDataArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         serialLists = new javax.swing.JList<>();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        serialDataArea = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        errorTextArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         editTempMgrItem = new javax.swing.JMenuItem();
@@ -71,12 +76,14 @@ public class seleniumFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
+        caseField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         caseField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 caseFieldKeyPressed(evt);
             }
         });
 
+        serialNumberField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         serialNumberField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 serialNumberFieldActionPerformed(evt);
@@ -109,12 +116,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        serialDataArea.setColumns(20);
-        serialDataArea.setFont(new java.awt.Font("Segoe UI Emoji", 0, 12)); // NOI18N
-        serialDataArea.setRows(5);
-        jScrollPane1.setViewportView(serialDataArea);
-
-        serialLists.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        serialLists.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         serialLists.setModel(listModel);
         serialLists.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -122,6 +124,19 @@ public class seleniumFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(serialLists);
+
+        serialDataArea.setColumns(20);
+        serialDataArea.setFont(new java.awt.Font("Segoe UI Emoji", 0, 12)); // NOI18N
+        serialDataArea.setRows(5);
+        jScrollPane1.setViewportView(serialDataArea);
+
+        jTabbedPane1.addTab("Reports", jScrollPane1);
+
+        errorTextArea.setColumns(20);
+        errorTextArea.setRows(5);
+        jScrollPane3.setViewportView(errorTextArea);
+
+        jTabbedPane1.addTab("Errors", jScrollPane3);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,17 +148,18 @@ public class seleniumFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
                 .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48))
         );
 
@@ -175,9 +191,10 @@ public class seleniumFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -229,6 +246,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         String selectedSerial = serialLists.getSelectedValue().getName();
         deviceObject device = serialLists.getSelectedValue();
         StringBuilder builder = new StringBuilder();
+        StringBuilder errorBuilder = new StringBuilder();
         
         serialDataArea.setText("");
         
@@ -260,6 +278,15 @@ public class seleniumFrame extends javax.swing.JFrame {
             serialDataArea.setText(builder.toString());
         }else{
             serialDataArea.setText("--NO REPORTS--");
+        }
+        
+        if(!device.getErrorElementMap().isEmpty()){
+            for(Map.Entry<Object,ArrayList> error:device.getErrorElementMap().entrySet()){
+                errorBuilder.append(error.getValue()+"\n");
+            }
+            errorTextArea.setText(errorBuilder.toString());
+        }else{
+            errorTextArea.setText("--NO ERRORS--");
         }
 
     }//GEN-LAST:event_serialListsValueChanged
@@ -518,10 +545,26 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 if(mgrFrame.getTemplateMap().containsKey(deviceName)){
                     for(Map.Entry<String,String> crit:mgrFrame.getTemplateMap().get(deviceName).getCriteria().entrySet()){
+                        System.out.println(current.getElementMap().get(reportType).get(crit.getKey()+":"));
+                        System.out.println(crit.getValue());
                         if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
-                            current.setMatchBoolean(true);
+                            if(current.getMatchBoolean()){
+                                current.setMatchBoolean(true);
+                            }
+                            
                         }else{
                             current.setMatchBoolean(false);
+                            if(!current.getErrorElementMap().containsKey(current.getName())){
+                                ArrayList temp = new ArrayList();
+                                temp.add(crit.getKey()+" "+crit.getValue());
+                                current.getErrorElementMap().put(current.getName(),temp); 
+                            }else{
+                                if(!current.getErrorElementMap().get(current.getName()).contains(crit.getKey())){
+                                    current.getErrorElementMap().get(current.getName()).add(crit.getKey()+" "+crit.getValue());
+                                }
+                                
+                            } 
+                            
                         }        
                     }
                 }
@@ -532,6 +575,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         
         serialLists.repaint();
     }
+
 
     public void run(){
         /* Create and display the form */
@@ -571,6 +615,7 @@ public class seleniumFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField caseField;
     private javax.swing.JMenuItem editTempMgrItem;
+    private javax.swing.JTextArea errorTextArea;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -578,6 +623,8 @@ public class seleniumFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea serialDataArea;
     private javax.swing.JList<deviceObject> serialLists;
     private javax.swing.JTextField serialNumberField;

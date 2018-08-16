@@ -1,4 +1,4 @@
-14
+17
 3
 iPad 5th Gen Wi-Fi 32GB Gold
 Fingerprint:Pass
@@ -42,3 +42,15 @@ Fingerprint:Pass
 2
 iPhone 6 32GB
 Fingerprint:Pass
+2
+iPhone 6S Plus GSM+CDMA 16GB Rose Gold
+Fingerprint:Fail
+2
+iPhone SE GSM+CDMA 64GB Gold
+Fingerprint:Fail
+5
+iPhone 6 GSM+CDMA 64GB Gold
+Fingerprint:Fail
+HeadphoneJack:Fail
+FaceID:N/A
+WirelessCharging:N/A

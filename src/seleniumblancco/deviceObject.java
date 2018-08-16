@@ -5,6 +5,7 @@
  */
 package seleniumblancco;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
@@ -16,10 +17,12 @@ public class deviceObject {
     private String deviceName;
     private boolean isMatch;
     private LinkedHashMap<Object,LinkedHashMap<Object,Object>> elements;
+    private LinkedHashMap<Object,ArrayList> errorElements;
     
     deviceObject(String deviceName){
         this.deviceName = deviceName;
         this.elements = new LinkedHashMap<Object,LinkedHashMap<Object,Object>>();
+        this.errorElements = new LinkedHashMap<Object,ArrayList>();
         isMatch = true;
     }
     
@@ -33,6 +36,10 @@ public class deviceObject {
     
     public LinkedHashMap<Object,LinkedHashMap<Object,Object>> getElementMap(){
         return this.elements;
+    }
+    
+    public LinkedHashMap<Object,ArrayList> getErrorElementMap(){
+        return this.errorElements;
     }
     
     public void setMatchBoolean(boolean isMatch){
