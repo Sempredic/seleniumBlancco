@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -154,12 +156,12 @@ public class seleniumFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(19, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48))
         );
 
@@ -302,15 +304,18 @@ public class seleniumFrame extends javax.swing.JFrame {
 //               
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
+        
         WebDriver driver = new ChromeDriver(chromeOptions);
         
         driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+        
         driver.get("https://cloud.blancco.com/login");
+        
         driver.findElement(By.id("login_usernameInput")).sendKeys("PreOwned");
         driver.findElement(By.id("login_passwordInput")).sendKeys("Welcome123!");
         driver.findElement(By.id("login_passwordInput")).sendKeys(Keys.RETURN);
         
-        // considering that there is only one tab opened in that point.
+        // get original current tab and store it
         String oldTab = driver.getWindowHandle();
 
         try{
@@ -530,6 +535,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         }
         
         System.out.println("SUCCESS!!!!");
+        
         driver.quit();
         
         validateSerialObjects();
@@ -590,6 +596,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         }        
         
         serialLists.repaint();
+        JOptionPane.showConfirmDialog(this,"            Complete!","Confirm",JOptionPane.DEFAULT_OPTION);
     }
 
 

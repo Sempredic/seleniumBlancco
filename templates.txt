@@ -54,9 +54,10 @@ Fingerprint:Fail
 HeadphoneJack:Fail
 FaceID:N/A
 WirelessCharging:N/A
-2
+3
 iPhone X GSM+CDMA 64GB Space Gray
-Fingerprint:Pass
+Status:Erased
+Fingerprint:N/A
 2
 iPhone 8 GSM+CDMA 256GB Silver
 Fingerprint:Pass
