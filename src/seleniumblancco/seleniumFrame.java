@@ -457,6 +457,10 @@ public class seleniumFrame extends javax.swing.JFrame {
                         String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();
                         String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
                         String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
+                        if(!serialL.equals("Serial:")){
+                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
+                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
+                        }
                         String statusL,statusN;
                         if(driver.findElements(By.xpath("/html/body/div/div[2]/div[3]/div[9]")).size()>0){
                            statusL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[9]")).getText().trim(); 
@@ -465,7 +469,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             statusL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim(); 
                             statusN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]/span")).getText().trim();
                         }
-                        
+
                         LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
                         
                         temp.put(erasureTechL, erasureTechN);
