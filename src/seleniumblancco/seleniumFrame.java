@@ -9,7 +9,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +17,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
  *
@@ -300,7 +300,10 @@ public class seleniumFrame extends javax.swing.JFrame {
 //        serialArray.add("F78PG1PUG5M4");//no reports
 //        serialArray.add("FTHSQ1V7GRWV");// failed bd report with erasure passed
 //               
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        WebDriver driver = new ChromeDriver(chromeOptions);
+        
         driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
         driver.get("https://cloud.blancco.com/login");
         driver.findElement(By.id("login_usernameInput")).sendKeys("PreOwned");
@@ -555,27 +558,30 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 if(mgrFrame.getTemplateMap().containsKey(deviceName)){
                     for(Map.Entry<String,String> crit:mgrFrame.getTemplateMap().get(deviceName).getCriteria().entrySet()){
-                        System.out.println(current.getElementMap().get(reportType).get(crit.getKey()+":"));
-                        System.out.println(crit.getValue());
-                        if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
-                            if(current.getMatchBoolean()){
-                                current.setMatchBoolean(true);
-                            }
-                            
-                        }else{
-                            current.setMatchBoolean(false);
-                            if(!current.getErrorElementMap().containsKey(current.getName())){
-                                ArrayList temp = new ArrayList();
-                                temp.add(crit.getKey()+" "+crit.getValue());
-                                current.getErrorElementMap().put(current.getName(),temp); 
-                            }else{
-                                if(!current.getErrorElementMap().get(current.getName()).contains(crit.getKey())){
-                                    current.getErrorElementMap().get(current.getName()).add(crit.getKey()+" "+crit.getValue());
+                        if(current.getElementMap().get(reportType).containsKey(crit.getKey()+":")){
+                            if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
+                                if(current.getMatchBoolean()){
+                                    current.setMatchBoolean(true);
                                 }
-                                
+
+                            }else{
+                                current.setMatchBoolean(false);
+                                if(!current.getErrorElementMap().containsKey(current.getName())){
+                                    ArrayList temp = new ArrayList();
+                                    temp.add(crit.getKey()+" "+crit.getValue());
+                                    current.getErrorElementMap().put(current.getName(),temp); 
+                                }else{
+                                    if(!current.getErrorElementMap().get(current.getName()).contains(crit.getKey())){
+                                        current.getErrorElementMap().get(current.getName()).add(crit.getKey()+" "+crit.getValue());
+                                    }
+
+                                } 
+
                             } 
-                            
-                        }        
+                        }else{
+                            System.out.println(crit.getKey()+"- Criteria Is Incorrect");
+                        }
+                               
                     }
                 }
             }else{
