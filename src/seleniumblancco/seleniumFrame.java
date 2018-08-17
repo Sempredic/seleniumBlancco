@@ -36,6 +36,8 @@ public class seleniumFrame extends javax.swing.JFrame {
     LinkedHashMap<Object,LinkedHashMap<Object,Object>> serialObjects;
     DefaultListModel<deviceObject> listModel;
     LinkedHashMap<Object,ArrayList> errorObjects;
+    ChromeOptions chromeOptions;
+    optionsFrame oFrame;
     
     public seleniumFrame() {
         listModel = new DefaultListModel<>();
@@ -45,6 +47,9 @@ public class seleniumFrame extends javax.swing.JFrame {
         serialObjects = new LinkedHashMap<Object,LinkedHashMap<Object,Object>>();
         serialLists.setCellRenderer(new listRenderer());
         errorObjects = new LinkedHashMap<Object,ArrayList>();
+        chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        oFrame = new optionsFrame();
 
     }
 
@@ -72,6 +77,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         editTempMgrItem = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        preferencesMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -178,6 +184,15 @@ public class seleniumFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        preferencesMenuItem.setText("Preferences");
+        preferencesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preferencesMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(preferencesMenuItem);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -283,8 +298,8 @@ public class seleniumFrame extends javax.swing.JFrame {
         }
         
         if(!device.getErrorElementMap().isEmpty()){
-            for(Map.Entry<Object,ArrayList> error:device.getErrorElementMap().entrySet()){
-                errorBuilder.append(error.getValue()+"\n");
+            for(Object error:device.getErrorElementMap().get(device.getName())){
+                errorBuilder.append(error+"\n");
             }
             errorTextArea.setText(errorBuilder.toString());
         }else{
@@ -292,6 +307,11 @@ public class seleniumFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_serialListsValueChanged
+
+    private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
+        // TODO add your handling code here:
+        oFrame.setVisible(true);
+    }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void runSelenium(){
         
@@ -302,9 +322,6 @@ public class seleniumFrame extends javax.swing.JFrame {
 //        serialArray.add("F78PG1PUG5M4");//no reports
 //        serialArray.add("FTHSQ1V7GRWV");// failed bd report with erasure passed
 //               
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--headless");
-        
         WebDriver driver = new ChromeDriver(chromeOptions);
         
         driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -545,54 +562,89 @@ public class seleniumFrame extends javax.swing.JFrame {
         
         String deviceName = null;
         String reportType = null;
+         
             
         for(int i=0;i<listModel.getSize();i++){        
             
             deviceObject current = listModel.getElementAt(i);
+            ArrayList<String> reportTypes = new ArrayList();
             
             if(!current.getElementMap().isEmpty()){
                 if(current.getElementMap().containsKey("BD")){
                     reportType = "BD";
-                }else if(current.getElementMap().containsKey("ER")){
-                    reportType = "ER";
-                }else if(current.getElementMap().containsKey("FR")){
-                    reportType = "FR";
+                    reportTypes.add("BD");
                 }
-               
-                
+                if(current.getElementMap().containsKey("ER")){
+                    reportType = "ER";
+                    reportTypes.add("ER");
+                }
+                if(current.getElementMap().containsKey("FR")){
+                    reportType = "FR";
+                    reportTypes.add("ER");
+                }
+
                 deviceName = (String)current.getElementMap().get(reportType).get("Model:");
                 
                 if(mgrFrame.getTemplateMap().containsKey(deviceName)){
+                    
                     for(Map.Entry<String,String> crit:mgrFrame.getTemplateMap().get(deviceName).getCriteria().entrySet()){
-                        if(current.getElementMap().get(reportType).containsKey(crit.getKey()+":")){
-                            if(current.getElementMap().get(reportType).get(crit.getKey()+":").equals(crit.getValue().trim())){
-                                if(current.getMatchBoolean()){
-                                    current.setMatchBoolean(true);
-                                }
+                        if(oFrame.getEROptionState()){
+                            for(String type:reportTypes){
+                               if(current.getElementMap().get(type).containsKey(crit.getKey()+":")){
+                                    if(current.getElementMap().get(type).get(crit.getKey()+":").equals(crit.getValue().trim())){
+                                        if(current.getMatchBoolean()){
+                                            current.setMatchBoolean(true);
+                                        }
 
-                            }else{
-                                current.setMatchBoolean(false);
-                                if(!current.getErrorElementMap().containsKey(current.getName())){
-                                    ArrayList temp = new ArrayList();
-                                    temp.add(crit.getKey()+" "+crit.getValue());
-                                    current.getErrorElementMap().put(current.getName(),temp); 
+                                    }else{
+                                        current.setMatchBoolean(false);
+                                        if(!current.getErrorElementMap().containsKey(current.getName())){
+                                            ArrayList temp = new ArrayList();
+                                            temp.add(crit.getKey()+" "+crit.getValue());
+                                            current.getErrorElementMap().put(current.getName(),temp); 
+                                        }else{
+                                            if(!current.getErrorElementMap().get(current.getName()).contains(crit.getKey())){
+                                                current.getErrorElementMap().get(current.getName()).add(crit.getKey()+" "+crit.getValue());
+                                            }
+                                        } 
+                                    } 
                                 }else{
-                                    if(!current.getErrorElementMap().get(current.getName()).contains(crit.getKey())){
-                                        current.getErrorElementMap().get(current.getName()).add(crit.getKey()+" "+crit.getValue());
-                                    }
-
+                                    System.out.println(crit.getKey()+"- Criteria Is Incorrect");
                                 } 
-
-                            } 
-                        }else{
-                            System.out.println(crit.getKey()+"- Criteria Is Incorrect");
-                        }
-                               
+                            }
+                            
+                        } ///DONT FORGET TO ADD THE ELSE HERE !!!!!!!  
                     }
                 }
             }else{
                 current.setMatchBoolean(false);
-            }   
+                
+            }
+            
+            if(!reportTypes.contains("ER")){
+                current.setMatchBoolean(false);
+                if(!current.getErrorElementMap().containsKey(current.getName())){
+                    ArrayList temp = new ArrayList();
+                    temp.add("NO ERASURE REPORT/MISSING");
+                    current.getErrorElementMap().put(current.getName(),temp); 
+                }else{
+                    if(!current.getErrorElementMap().get(current.getName()).contains("NO ERASURE REPORT/MISSING")){
+                        current.getErrorElementMap().get(current.getName()).add("NO ERASURE REPORT/MISSING");
+                    }
+                }
+                
+            }else if(!reportTypes.contains("BD")){
+                current.setMatchBoolean(false);
+                if(!current.getErrorElementMap().containsKey(current.getName())){
+                    ArrayList temp = new ArrayList();
+                    temp.add("NO BLANCCO DIAGNOSTIC REPORT/MISSING");
+                    current.getErrorElementMap().put(current.getName(),temp); 
+                }else{
+                    if(!current.getErrorElementMap().get(current.getName()).contains("NO BLANCCO DIAGNOSTIC REPORT/MISSING")){
+                        current.getErrorElementMap().get(current.getName()).add("NO BLANCCO DIAGNOSTIC REPORT/MISSING");
+                    }
+                }
+            }
         }        
         
         serialLists.repaint();
@@ -648,6 +700,7 @@ public class seleniumFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JMenuItem preferencesMenuItem;
     private javax.swing.JTextArea serialDataArea;
     private javax.swing.JList<deviceObject> serialLists;
     private javax.swing.JTextField serialNumberField;

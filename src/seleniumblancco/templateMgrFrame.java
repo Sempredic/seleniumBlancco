@@ -556,7 +556,7 @@ public class templateMgrFrame extends javax.swing.JFrame {
         assignedCriteriaList.removeAll();
         
         for(Map.Entry<String,String> crit:temp.getCriteria().entrySet()){
-            assignedCriteriaList.add(crit.getKey()+": "+crit.getValue());
+            assignedCriteriaList.add(crit.getKey()+":"+crit.getValue());
         }
               
     }

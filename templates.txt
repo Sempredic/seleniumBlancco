@@ -1,69 +1,140 @@
-21
-3
+24
+5
 iPad 5th Gen Wi-Fi 32GB Gold
 Fingerprint:Pass
-Headphones:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 6S Plus GSM+CDMA 64GB Space Gray
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 7 Plus GSM+CDMA 32GB Gold
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 5S GSM 16GB Silver
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone SE GSM+CDMA 32GB Silver
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone X GSM+CDMA 64GB Silver
 Fingerprint:N/A
-2
+HeadphoneJack:Pass
+FaceID:Pass
+WirelessCharging:Pass
+5
 iPhone X GSM+CDMA 256GB Silver
 Fingerprint:N/A
-2
+HeadphoneJack:Pass
+FaceID:Pass
+WirelessCharging:Pass
+5
 iPhone 7 Plus GSM 128GB Jet Black
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 7 GSM+CDMA 32GB Rose Gold
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 8 Plus GSM+CDMA 64GB Gold
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:Pass
+5
 iPhone 8 GSM+CDMA 64GB Space Gray
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:Pass
+5
 iPhone X GSM+CDMA 256GB Space Gray
 Fingerprint:N/A
-2
+HeadphoneJack:Pass
+FaceID:Pass
+WirelessCharging:Pass
+5
 iPhone 8 GSM+CDMA 64GB Red
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:Pass
+5
 iPhone 6 32GB
 Fingerprint:Pass
-2
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone 6S Plus GSM+CDMA 16GB Rose Gold
-Fingerprint:Fail
-2
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
 iPhone SE GSM+CDMA 64GB Gold
-Fingerprint:Fail
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
 5
 iPhone 6 GSM+CDMA 64GB Gold
-Fingerprint:Fail
-HeadphoneJack:Fail
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
+iPhone X GSM+CDMA 64GB Space Gray
+Fingerprint:N/A
+HeadphoneJack:Pass
+FaceID:Pass
+WirelessCharging:Pass
+5
+iPhone 8 GSM+CDMA 256GB Silver
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:Pass
+5
+iPhone 7 Plus GSM+CDMA 32GB Black
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:N/A
+5
+iPhone 8 Plus GSM+CDMA 64GB Silver
+Fingerprint:Pass
+HeadphoneJack:Pass
+FaceID:N/A
+WirelessCharging:Pass
+5
+iPhone 6S GSM+CDMA 16GB Space Gray
+Fingerprint:Pass
+HeadphoneJack:Pass
 FaceID:N/A
 WirelessCharging:N/A
 3
-iPhone X GSM+CDMA 64GB Space Gray
+iPhone 6S
+Fingerprint:Pass
+HeadphoneJack:Pass
+2
+iPhone 7 (Apple Mobile Device [Recovery Mode])
 Status:Erased
-Fingerprint:N/A
-2
-iPhone 8 GSM+CDMA 256GB Silver
-Fingerprint:Pass
-2
-iPhone 7 Plus GSM+CDMA 32GB Black
-Fingerprint:Pass
-2
-iPhone 8 Plus GSM+CDMA 64GB Silver
-Fingerprint:Pass
