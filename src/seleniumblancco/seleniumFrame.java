@@ -375,12 +375,14 @@ public class seleniumFrame extends javax.swing.JFrame {
                         System.out.println("BD Info");
                         //first section
                         
-                        String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
+//                        String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
+//                        String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
+//                        if(!serialL.equals("Serial:")){
+//                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
+//                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
+//                        }
+                        String serialL = driver.findElement(By.xpath("//*[text()[contains(.,'Serial:')]]")).getText().trim();
                         String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
-                        if(!serialL.equals("Serial:")){
-                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
-                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
-                        }
                         String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
                         String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
                         String erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
