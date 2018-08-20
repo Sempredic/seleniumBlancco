@@ -13,11 +13,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -38,6 +39,7 @@ public class seleniumFrame extends javax.swing.JFrame {
     LinkedHashMap<Object,ArrayList> errorObjects;
     ChromeOptions chromeOptions;
     optionsFrame oFrame;
+    WebDriver driver;
     
     public seleniumFrame() {
         listModel = new DefaultListModel<>();
@@ -322,7 +324,7 @@ public class seleniumFrame extends javax.swing.JFrame {
 //        serialArray.add("F78PG1PUG5M4");//no reports
 //        serialArray.add("FTHSQ1V7GRWV");// failed bd report with erasure passed
 //               
-        WebDriver driver = new ChromeDriver(chromeOptions);
+        driver = new ChromeDriver(chromeOptions);
         
         driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
         
@@ -374,27 +376,59 @@ public class seleniumFrame extends javax.swing.JFrame {
                         //title
                         System.out.println("BD Info");
                         //first section
+                        String serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
+                            String serialN;
+                            String modelL;
+                            String modelN;                      
+                            String erasureL;
+                            String erasureN;
+                            String fingerprintL;
+                            String fingerprintN;
+                            String wirelessChgL;
+                            String wirelessChgN;
+                            String faceIDL;
+                            String faceIDN; 
+                            String headphoneL;
+                            String headphoneN; 
+                            String btmMicL;
+                            String btmMicN;
+                        if(driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim().equals("Origin:")){
+                            serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
+                            serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
+                            modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
+                            modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
+                            erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
+                            erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
+                            fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
+                            fingerprintN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
+                            wirelessChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[1]")).getText().trim();
+                            wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[5]/div[2]")).getText().trim();
+                            faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
+                            faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
+                            headphoneL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[1]")).getText().trim();
+                            headphoneN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[2]")).getText().trim();
+                            btmMicL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[1]")).getText().trim();
+                            btmMicN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[2]/div")).getText().trim();
+                        }else{
+                            serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
+                            serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
+                            modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
+                            modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
+                            erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
+                            erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
+                       
+                            fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
+                            fingerprintN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
+                            wirelessChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
+                            wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
+                            faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim();
+                            faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[2]")).getText().trim();
+                            headphoneL = "HeadphoneJack:";
+                            headphoneN = "N/A";
+                            btmMicL = "BottomMic:";
+                            btmMicN = "N/A";
+                        }
                         
-//                        String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
-//                        String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
-//                        if(!serialL.equals("Serial:")){
-//                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
-//                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
-//                        }
-                        String serialL = driver.findElement(By.xpath("//*[text()[contains(.,'Serial:')]]")).getText().trim();
-                        String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
-                        String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-                        String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
-                        String erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
-                        String erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
-                        String fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
-                        String fingerprintN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
-                        String wirelessChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[5]/div[1]")).getText().trim();
-                        String wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[5]/div[2]")).getText().trim();
-                        String faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
-                        String faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
-                        String headphoneL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[1]")).getText().trim();
-                        String headphoneN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[2]")).getText().trim();
                         //first column
                         String wifiL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[1]/div[1]")).getText().trim();
                         String wifiN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[1]/div[2]/div")).getText().trim();
@@ -431,8 +465,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                         String cameraN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[14]/div[2]/div")).getText().trim();
                         String multiTouchL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[16]/div[1]")).getText().trim();
                         String multiTouchN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[16]/div[2]/div")).getText().trim();
-                        String btmMicL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[1]")).getText().trim();
-                        String btmMicN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[2]/div")).getText().trim();
+                        
 
                         String overallL = driver.findElement(By.xpath("/html/body/div/div[2]/div[7]/div/div[1]/b")).getText().trim();
                         String overallN = driver.findElement(By.xpath("/html/body/div/div[2]/div[7]/div/div[2]/b/div")).getText().trim();
@@ -558,6 +591,24 @@ public class seleniumFrame extends javax.swing.JFrame {
         driver.quit();
         
         validateSerialObjects();
+    }
+    
+    protected String getXPath(WebElement webElement) { 
+        JavascriptExecutor javascriptExecutor = null;
+        
+        if (driver instanceof JavascriptExecutor) {
+            javascriptExecutor = JavascriptExecutor.class.cast(driver);
+        }
+        String jscript = "function getPathTo(node) {" + 
+            "  var stack = [];" + 
+            "  while(node.parentNode !== null) {" + 
+            "    stack.unshift(node.tagName);" + 
+            "    node = node.parentNode;" + 
+            "  }" + 
+            "  return stack.join('/');" + 
+            "}" + 
+            "return getPathTo(arguments[0]);"; 
+        return (String) javascriptExecutor.executeScript(jscript, webElement); 
     }
     
     private void validateSerialObjects(){
