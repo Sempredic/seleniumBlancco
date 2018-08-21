@@ -10,12 +10,12 @@ import java.awt.event.KeyEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -371,6 +371,12 @@ public class seleniumFrame extends javax.swing.JFrame {
                 // loop focus through new tabs and scrape data from each one
                 for(String tabs:newTab){
                     driver.switchTo().window(tabs);
+                    
+                    ArrayList<WebElement> el = (ArrayList)driver.findElements(By.cssSelector("*"));
+
+                    for ( WebElement e : el ) {
+                      System.out.println(e.getText());
+                    }
 
                     if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Hardware Report")){
                         //title
@@ -388,10 +394,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             String wirelessChgN;
                             String faceIDL;
                             String faceIDN; 
-                            String headphoneL;
-                            String headphoneN; 
-                            String btmMicL;
-                            String btmMicN;
+  
                         if(driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim().equals("Origin:")){
                             serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
                             serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
@@ -405,10 +408,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[5]/div[2]")).getText().trim();
                             faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
                             faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
-                            headphoneL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[1]")).getText().trim();
-                            headphoneN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[2]")).getText().trim();
-                            btmMicL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[1]")).getText().trim();
-                            btmMicN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[18]/div[2]/div")).getText().trim();
+
                         }else{
                             serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
                             serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
@@ -423,10 +423,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
                             faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim();
                             faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[2]")).getText().trim();
-                            headphoneL = "HeadphoneJack:";
-                            headphoneN = "N/A";
-                            btmMicL = "BottomMic:";
-                            btmMicN = "N/A";
+            
                         }
                         
                         //first column
@@ -477,7 +474,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp.put(fingerprintL, fingerprintN);
                         temp.put(wirelessChgL, wirelessChgN);
                         temp.put(faceIDL, faceIDN);
-                        temp.put(headphoneL, headphoneN);
+                        //temp.put(headphoneL, headphoneN);
                         
                         temp.put(wifiL, wifiN);
                         temp.put(batteryChgL, batteryChgN);
@@ -497,7 +494,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp.put(screenLockL, screenLockN);
                         temp.put(cameraL, cameraN);
                         temp.put(multiTouchL, multiTouchN);
-                        temp.put(btmMicL, btmMicN);
+                        //temp.put(btmMicL, btmMicN);
 
                         for(int i=0;i<listModel.getSize();i++){                          
                             deviceObject current = listModel.getElementAt(i);
@@ -592,25 +589,7 @@ public class seleniumFrame extends javax.swing.JFrame {
         
         validateSerialObjects();
     }
-    
-    protected String getXPath(WebElement webElement) { 
-        JavascriptExecutor javascriptExecutor = null;
-        
-        if (driver instanceof JavascriptExecutor) {
-            javascriptExecutor = JavascriptExecutor.class.cast(driver);
-        }
-        String jscript = "function getPathTo(node) {" + 
-            "  var stack = [];" + 
-            "  while(node.parentNode !== null) {" + 
-            "    stack.unshift(node.tagName);" + 
-            "    node = node.parentNode;" + 
-            "  }" + 
-            "  return stack.join('/');" + 
-            "}" + 
-            "return getPathTo(arguments[0]);"; 
-        return (String) javascriptExecutor.executeScript(jscript, webElement); 
-    }
-    
+
     private void validateSerialObjects(){
         
         String deviceName = null;

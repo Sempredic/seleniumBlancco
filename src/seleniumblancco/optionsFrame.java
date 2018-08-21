@@ -5,6 +5,11 @@
  */
 package seleniumblancco;
 
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
 /**
  *
  * @author 311015
@@ -14,8 +19,11 @@ public class optionsFrame extends javax.swing.JFrame {
     /**
      * Creates new form optionsFrame
      */
+    ArrayList<Object> fieldsListArray;
+    
     public optionsFrame() {
         initComponents();
+        fieldsListArray = new ArrayList<Object>();
     }
     
     public boolean getEROptionState(){
@@ -31,11 +39,73 @@ public class optionsFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        optionsLabel = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        assCriteriaDelButton = new javax.swing.JButton();
+        assFieldAddButton = new javax.swing.JButton();
+        assignedFieldsLabel = new javax.swing.JLabel();
+        assignedFieldsList = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
         erOptionBox = new javax.swing.JCheckBox();
-        optionsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        optionsLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        optionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        optionsLabel.setText("OPTIONS");
+
+        jPanel3.setBackground(new java.awt.Color(153, 153, 153));
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+
+        assCriteriaDelButton.setText("Del");
+        assCriteriaDelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assCriteriaDelButtonActionPerformed(evt);
+            }
+        });
+
+        assFieldAddButton.setText("Add");
+        assFieldAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assFieldAddButtonActionPerformed(evt);
+            }
+        });
+
+        assignedFieldsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        assignedFieldsLabel.setText("Assigned Fields");
+
+        assignedFieldsList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(assignedFieldsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(assFieldAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(assCriteriaDelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(assignedFieldsList, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(assignedFieldsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(assignedFieldsList, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(assFieldAddButton)
+                    .addComponent(assCriteriaDelButton))
+                .addContainerGap())
+        );
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -59,36 +129,104 @@ public class optionsFrame extends javax.swing.JFrame {
                 .addContainerGap(158, Short.MAX_VALUE))
         );
 
-        optionsLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        optionsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        optionsLabel.setText("OPTIONS");
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(optionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(optionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(23, 23, 23)
                 .addComponent(optionsLabel)
-                .addGap(53, 53, 53)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void assFieldAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assFieldAddButtonActionPerformed
+        // TODO add your handling code here:
+
+        //        Object[] options = DatabaseObj.getDevicesList().toArray();
+        //
+        String fieldName = (String)JOptionPane.showInputDialog(
+            this,
+            new JLabel("Enter Criteria", SwingConstants.CENTER),
+            "Add Criteria",
+            JOptionPane.PLAIN_MESSAGE);
+
+        if(fieldName != null){
+
+            if(!fieldsListArray.contains(fieldName)){
+                fieldsListArray.add(fieldName);
+            }else{
+                JOptionPane.showMessageDialog(this,"Field Already Exists","Try Again", JOptionPane.WARNING_MESSAGE);
+            }
+
+            updateAssignedFieldsList();
+  
+        }
+    }//GEN-LAST:event_assFieldAddButtonActionPerformed
+
+    private void updateAssignedFieldsList(){
+        
+        
+        
+        for(Object field:fieldsListArray){
+            assignedFieldsList.add((String)field);
+        }
+    }
+    private void assCriteriaDelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assCriteriaDelButtonActionPerformed
+        // TODO add your handling code here:
+
+        if(assignedFieldsList.getSelectedItems().length>0){
+
+            String fieldName = assignedFieldsList.getSelectedItem();
+
+            if(fieldName != null){
+                
+                if(fieldsListArray.contains(fieldName)){
+                    fieldsListArray.remove(fieldName);
+                }
+
+                updateAssignedFieldsList();
+            }
+        }
+
+    }//GEN-LAST:event_assCriteriaDelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -123,8 +261,14 @@ public class optionsFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton assCriteriaDelButton;
+    private javax.swing.JButton assFieldAddButton;
+    private javax.swing.JLabel assignedFieldsLabel;
+    private java.awt.List assignedFieldsList;
     private javax.swing.JCheckBox erOptionBox;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel optionsLabel;
     // End of variables declaration//GEN-END:variables
 }
