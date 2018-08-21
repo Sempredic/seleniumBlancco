@@ -1,0 +1,7 @@
+Serial:
+Model:
+HeadphoneJack:
+FaceID:
+Fingerprint:
+WirelessCharging:
+Headset:

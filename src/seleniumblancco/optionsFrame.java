@@ -5,6 +5,10 @@
  */
 package seleniumblancco;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,10 +24,27 @@ public class optionsFrame extends javax.swing.JFrame {
      * Creates new form optionsFrame
      */
     ArrayList<Object> fieldsListArray;
+    ArrayList<Object> fieldsERListArray;
+    ArrayList<Object> fieldsFRListArray;
     
     public optionsFrame() {
         initComponents();
         fieldsListArray = new ArrayList<Object>();
+        fieldsERListArray = new ArrayList<Object>();
+        fieldsFRListArray = new ArrayList<Object>();
+        readFromFile();
+    }
+    
+    public ArrayList<Object> getFieldsListArray(){
+        return this.fieldsListArray;
+    }
+    
+    public ArrayList<Object> getERFieldsListArray(){
+        return this.fieldsERListArray;
+    }
+    
+    public ArrayList<Object> getFRFieldsListArray(){
+        return this.fieldsFRListArray;
     }
     
     public boolean getEROptionState(){
@@ -45,9 +66,13 @@ public class optionsFrame extends javax.swing.JFrame {
         assCriteriaDelButton = new javax.swing.JButton();
         assFieldAddButton = new javax.swing.JButton();
         assignedFieldsLabel = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         assignedFieldsList = new java.awt.List();
+        assignedERFieldsList = new java.awt.List();
+        assignedFRFieldsList = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
         erOptionBox = new javax.swing.JCheckBox();
+        applyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,6 +102,9 @@ public class optionsFrame extends javax.swing.JFrame {
         assignedFieldsLabel.setText("Assigned Fields");
 
         assignedFieldsList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTabbedPane1.addTab("BD", assignedFieldsList);
+        jTabbedPane1.addTab("ER", assignedERFieldsList);
+        jTabbedPane1.addTab("FR", assignedFRFieldsList);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -84,24 +112,24 @@ public class optionsFrame extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(assignedFieldsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTabbedPane1)
+                    .addComponent(assignedFieldsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(assFieldAddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(assCriteriaDelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(assignedFieldsList, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                        .addComponent(assCriteriaDelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(assignedFieldsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(assignedFieldsList, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(assFieldAddButton)
                     .addComponent(assCriteriaDelButton))
                 .addContainerGap())
@@ -145,10 +173,14 @@ public class optionsFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        applyButton.setText("Apply");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,14 +194,20 @@ public class optionsFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(156, 156, 156)
+                .addComponent(applyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(optionsLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(applyButton)
                 .addContainerGap())
         );
 
@@ -190,10 +228,24 @@ public class optionsFrame extends javax.swing.JFrame {
 
         if(fieldName != null){
 
-            if(!fieldsListArray.contains(fieldName)){
-                fieldsListArray.add(fieldName);
-            }else{
-                JOptionPane.showMessageDialog(this,"Field Already Exists","Try Again", JOptionPane.WARNING_MESSAGE);
+            if(assignedFieldsList.isShowing()){
+                if(!fieldsListArray.contains(fieldName)){
+                    fieldsListArray.add(fieldName);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Field Already Exists","Try Again", JOptionPane.WARNING_MESSAGE);
+                }
+            }else if(assignedERFieldsList.isShowing()){
+                if(!fieldsERListArray.contains(fieldName)){
+                    fieldsERListArray.add(fieldName);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Field Already Exists","Try Again", JOptionPane.WARNING_MESSAGE);
+                }
+            }else if(assignedFRFieldsList.isShowing()){
+                if(!fieldsFRListArray.contains(fieldName)){
+                    fieldsFRListArray.add(fieldName);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Field Already Exists","Try Again", JOptionPane.WARNING_MESSAGE);
+                }
             }
 
             updateAssignedFieldsList();
@@ -203,31 +255,124 @@ public class optionsFrame extends javax.swing.JFrame {
 
     private void updateAssignedFieldsList(){
         
-        
+        assignedFieldsList.removeAll();
+        assignedERFieldsList.removeAll();
+        assignedFRFieldsList.removeAll();
         
         for(Object field:fieldsListArray){
             assignedFieldsList.add((String)field);
         }
+        for(Object field:fieldsERListArray){
+            assignedERFieldsList.add((String)field);
+        }
+        for(Object field:fieldsFRListArray){
+            assignedFRFieldsList.add((String)field);
+        }
+        
+        writeToFile();
     }
     private void assCriteriaDelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assCriteriaDelButtonActionPerformed
         // TODO add your handling code here:
 
-        if(assignedFieldsList.getSelectedItems().length>0){
+        if(assignedFieldsList.isShowing()){
+            if(assignedFieldsList.getSelectedItems().length>0){
 
-            String fieldName = assignedFieldsList.getSelectedItem();
+                String fieldName = assignedFieldsList.getSelectedItem();
 
-            if(fieldName != null){
-                
-                if(fieldsListArray.contains(fieldName)){
-                    fieldsListArray.remove(fieldName);
+                if(fieldName != null){
+
+                    if(fieldsListArray.contains(fieldName)){
+                        fieldsListArray.remove(fieldName);
+                    }
                 }
+            }  
+        }else if(assignedERFieldsList.isShowing()){
+            if(assignedERFieldsList.getSelectedItems().length>0){
 
-                updateAssignedFieldsList();
+                String fieldName = assignedERFieldsList.getSelectedItem();
+
+                if(fieldName != null){
+
+                    if(fieldsERListArray.contains(fieldName)){
+                        fieldsERListArray.remove(fieldName);
+                    }
+                }
+            }
+        }else if(assignedFRFieldsList.isShowing()){
+            if(assignedFRFieldsList.getSelectedItems().length>0){
+
+                String fieldName = assignedFRFieldsList.getSelectedItem();
+
+                if(fieldName != null){
+
+                    if(fieldsFRListArray.contains(fieldName)){
+                        fieldsFRListArray.remove(fieldName);
+                    }
+                }
             }
         }
+        
+        updateAssignedFieldsList();
+        
 
     }//GEN-LAST:event_assCriteriaDelButtonActionPerformed
 
+    private void readFromFile(){
+        try{
+            
+            File file = new File("fields.txt");
+            File erFile = new File("ERFields.txt");
+            File frFile = new File("FRFields.txt");
+            
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            if(!erFile.exists()){
+                erFile.createNewFile();
+            }
+            if(!frFile.exists()){
+                frFile.createNewFile();
+            }
+ 
+            fieldsListArray = (ArrayList)Files.readAllLines(Paths.get(file.getAbsolutePath()));
+            fieldsERListArray = (ArrayList)Files.readAllLines(Paths.get(erFile.getAbsolutePath()));
+            fieldsFRListArray = (ArrayList)Files.readAllLines(Paths.get(frFile.getAbsolutePath()));
+            
+            updateAssignedFieldsList();
+            
+        }catch(Exception e){
+            System.out.println("error");
+            
+        }
+    }
+    private void writeToFile(){
+        
+        try{
+            
+            PrintWriter writer = new PrintWriter("fields.txt", "UTF-8");
+            PrintWriter erWriter = new PrintWriter("ERFields.txt", "UTF-8");
+            PrintWriter frWriter = new PrintWriter("FRFields.txt", "UTF-8");
+
+            for(Object field:fieldsListArray){
+                writer.println(field);
+            }
+            for(Object field:fieldsERListArray){
+                erWriter.println(field);
+            }
+            for(Object field:fieldsFRListArray){
+                frWriter.println(field);
+            }
+            
+            writer.close();
+            erWriter.close();
+            frWriter.close();
+            
+        }catch(Exception e){
+            System.out.println("error");
+            
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -261,14 +406,18 @@ public class optionsFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton applyButton;
     private javax.swing.JButton assCriteriaDelButton;
     private javax.swing.JButton assFieldAddButton;
+    private java.awt.List assignedERFieldsList;
+    private java.awt.List assignedFRFieldsList;
     private javax.swing.JLabel assignedFieldsLabel;
     private java.awt.List assignedFieldsList;
     private javax.swing.JCheckBox erOptionBox;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel optionsLabel;
     // End of variables declaration//GEN-END:variables
 }
