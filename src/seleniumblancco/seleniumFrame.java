@@ -383,6 +383,8 @@ public class seleniumFrame extends javax.swing.JFrame {
                         
                         temp = new LinkedHashMap<Object,Object>();
                         
+                        String string = driver.findElement(By.xpath("/html/body/div/div[1]/div")).getText();
+                        System.out.println(string);
                         if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
                             temp.put("Serial:", serials);
                             for(int i=0;i<listModel.getSize();i++){                          
