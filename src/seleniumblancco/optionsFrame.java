@@ -50,6 +50,10 @@ public class optionsFrame extends javax.swing.JFrame {
     public boolean getEROptionState(){
         return erOptionBox.getModel().isSelected();
     }
+    
+    public boolean getOReportOptionState(){
+        return onlyReportsCheckBox.getModel().isSelected();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,6 +76,7 @@ public class optionsFrame extends javax.swing.JFrame {
         assignedFRFieldsList = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
         erOptionBox = new javax.swing.JCheckBox();
+        onlyReportsCheckBox = new javax.swing.JCheckBox();
         applyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -140,13 +145,17 @@ public class optionsFrame extends javax.swing.JFrame {
         erOptionBox.setSelected(true);
         erOptionBox.setText("                            Include ER");
 
+        onlyReportsCheckBox.setText("                          Only Reports");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(erOptionBox, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(erOptionBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(onlyReportsCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -154,7 +163,9 @@ public class optionsFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(erOptionBox)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(onlyReportsCheckBox)
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -418,6 +429,7 @@ public class optionsFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JCheckBox onlyReportsCheckBox;
     private javax.swing.JLabel optionsLabel;
     // End of variables declaration//GEN-END:variables
 }

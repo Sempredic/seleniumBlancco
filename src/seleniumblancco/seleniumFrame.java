@@ -249,7 +249,11 @@ public class seleniumFrame extends javax.swing.JFrame {
         if(keyCode == KeyEvent.VK_ENTER){
             
             if(serialNumberField.getText().trim().toUpperCase().equals("VALIDATE")){
-                runSelenium();
+                if(!oFrame.getOReportOptionState()){
+                    runSelenium();
+                }else{
+                    runSeleniumReportsOnly();
+                }
                 System.out.println("Validate!");
                 serialNumberField.setText("");
             }else if(!serialListArray.contains(serialNumberField.getText())){
@@ -323,6 +327,164 @@ public class seleniumFrame extends javax.swing.JFrame {
         oFrame.setVisible(true);
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
+    private void runSeleniumReportsOnly(){
+        
+        driver = new ChromeDriver(chromeOptions);
+        
+        driver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
+        
+        driver.get("https://cloud.blancco.com/login");
+        
+        driver.findElement(By.id("login_usernameInput")).sendKeys("PreOwned");
+        driver.findElement(By.id("login_passwordInput")).sendKeys("Welcome123!");
+        driver.findElement(By.id("login_passwordInput")).sendKeys(Keys.RETURN);
+        
+        // get original current tab and store it
+        String oldTab = driver.getWindowHandle();
+
+        try{
+            
+            for(Object serials:serialListArray){
+                
+                System.out.println("Input Started");
+                
+                driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
+                driver.findElement(By.id("reportFiltering_searchInput")).clear();
+                driver.findElement(By.id("reportFiltering_searchInput")).sendKeys((String)serials);
+                sleep(1000);
+                driver.findElement(By.id("reportFiltering_searchInput")).sendKeys(Keys.RETURN);
+                
+                sleep(3000);
+                
+                System.out.println("View Started");
+             
+                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("0 reports")){
+                    continue;
+                }
+                
+                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("1 reports")){
+                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
+                }else{
+                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
+                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[2]/td[2]/div/div/a[1]")).click();
+                }
+                
+                sleep(1000);
+
+                newTab = new ArrayList<String>(driver.getWindowHandles());
+                newTab.remove(oldTab);
+                // loop focus through new tabs and scrape data from each one
+                for(String tabs:newTab){
+                    
+                    driver.switchTo().window(tabs);
+                    
+                    if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals(
+                            "Hardware Report")){
+                        
+                        temp = new LinkedHashMap<Object,Object>();
+                        
+                        if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
+                            temp.put("Serial:", serials);
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("BD", temp);
+                                    break;
+                                }
+                            }  
+                        }
+                        
+                        
+                    }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals(
+                            "Data Erasure Report")){
+                        
+                        temp = new LinkedHashMap<Object,Object>();
+                        
+                        if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
+                            temp.put("Serial:", serials);
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("ER", temp);
+                                    break;
+                                }
+                            }  
+                        }
+                        
+                        if(driver.findElements(By.xpath("//*[contains(text(), 'Erased')]")).size()>0){
+                            temp.put("Status:", "Erased");
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("ER", temp);
+                                    break;
+                                }
+                            }
+                        }else{
+                            temp.put("Status:", "Failed");
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("ER", temp);
+                                    break;
+                                }
+                            }
+                        }
+                        
+                    }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals(
+                            "Factory Reset Report")){
+                        
+                        temp = new LinkedHashMap<Object,Object>();
+                        
+                        if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
+                            temp.put("Serial:", serials);
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("FR", temp);
+                                    break;
+                                }
+                            }  
+                        }
+                        
+                        if(driver.findElements(By.xpath("//*[contains(text(), 'Erased')]")).size()>0){
+                            temp.put("Status:", "Erased");
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("ER", temp);
+                                    break;
+                                }
+                            }
+                        }else{
+                            temp.put("Status:", "Not Erased");
+                            for(int i=0;i<listModel.getSize();i++){                          
+                                deviceObject current = listModel.getElementAt(i);
+                                if(current.getName().equals(temp.get("Serial:"))){
+                                    current.getElementMap().put("ER", temp);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    driver.close();
+                }
+                // change focus back to old tab
+                driver.switchTo().window(oldTab);
+            }
+  
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+        
+        System.out.println("RO-SUCCESS!!!!");
+        
+        driver.quit();
+        
+        validateSerialObjects();
+        
+    }
     private void runSelenium(){
          
         driver = new ChromeDriver(chromeOptions);
