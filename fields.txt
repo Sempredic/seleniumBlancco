@@ -3,5 +3,21 @@ Model:
 HeadphoneJack:
 FaceID:
 Fingerprint:
-WirelessCharging:
 Headset:
+Wirelesscharging:
+Wifi:
+Speaker:
+LCD Color:
+LCD Backlight:
+Vibration:
+Volume Keys:
+Screen:
+Front Camera(Assisted):
+Battery Wear:
+Microphone:
+Touch:
+Proximity:
+Home Key:
+Screen Lock Key:
+Camera(Assisted):
+Multi-touch:

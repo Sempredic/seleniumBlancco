@@ -40,6 +40,11 @@ public class seleniumFrame extends javax.swing.JFrame {
     ChromeOptions chromeOptions;
     optionsFrame oFrame;
     WebDriver driver;
+    ArrayList<String> newTab;
+    LinkedHashMap<String,ArrayList> newMap;
+    ArrayList<WebElement> el;
+    ArrayList elements;
+    LinkedHashMap<Object,Object> temp;
     
     public seleniumFrame() {
         listModel = new DefaultListModel<>();
@@ -52,6 +57,9 @@ public class seleniumFrame extends javax.swing.JFrame {
         chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
         oFrame = new optionsFrame();
+        el = new ArrayList<WebElement>();
+        elements = new ArrayList();
+        temp = new LinkedHashMap<Object,Object>();
 
     }
 
@@ -316,17 +324,10 @@ public class seleniumFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void runSelenium(){
-        
-        //ArrayList<Object> serialArray = new ArrayList<Object>();
-//        serialArray.add("F9FTH2D1HP9X");//successful ipad reports
-//        serialArray.add("F78PG1PUG5MH");//no erasure report with bd passed has 2 BD reports select most recent one
-//        serialArray.add("ZY2249JSN8");//one report
-//        serialArray.add("F78PG1PUG5M4");//no reports
-//        serialArray.add("FTHSQ1V7GRWV");// failed bd report with erasure passed
-//               
+         
         driver = new ChromeDriver(chromeOptions);
         
-        driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
         
         driver.get("https://cloud.blancco.com/login");
         
@@ -366,34 +367,40 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 sleep(1000);
 
-                ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
-                LinkedHashMap<String,ArrayList> newMap = new LinkedHashMap<String,ArrayList>();
+                newTab = new ArrayList<String>(driver.getWindowHandles());
                 newTab.remove(oldTab);
                 // loop focus through new tabs and scrape data from each one
                 for(String tabs:newTab){
+                    
                     driver.switchTo().window(tabs);
                     
-                    ArrayList<WebElement> el = (ArrayList)driver.findElements(By.cssSelector("*"));
-
+                    elements.clear();
+                    el.clear();
+                    
+                    el = (ArrayList)driver.findElements(By.cssSelector("*"));
+ 
+                    for(WebElement e:el){
+                        elements.add(e.getText());
+                    }
+ 
                     if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Hardware Report")){
-                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-                        for (int i=0;i<el.size();i++) {
-                            if(oFrame.getFieldsListArray().contains(el.get(i).getText())){
-                                if(el.get(i).getText().equals("Serial:")){
-                                    if(el.get(i+1).getText().equals(serials)){
-                                        if(!temp.containsKey(el.get(i).getText().trim())){
-                                            temp.put(el.get(i).getText(),el.get(i+1).getText());
+                        temp = new LinkedHashMap<Object,Object>();
+
+                        for(Object item:oFrame.getFieldsListArray()){
+                            if(elements.contains(item)){
+                                if(elements.get(elements.indexOf(item)).equals("Serial:")){
+                                     if(elements.get(elements.indexOf(item)+1).equals(serials)){
+                                            if(!temp.containsKey(elements.get(elements.indexOf(item)))){
+                                                temp.put(elements.get(elements.indexOf(item)),elements.get(elements.indexOf(item)+1));
+                                            }
+                                        }
+                                    }else{
+                                        if(!temp.containsKey(elements.get(elements.indexOf(item)))){
+                                            temp.put(elements.get(elements.indexOf(item)),elements.get(elements.indexOf(item)+1));
                                         }
                                     }
-                                }else{
-                                    if(!temp.containsKey(el.get(i).getText().trim())){
-                                        temp.put(el.get(i).getText(),el.get(i+1).getText());
-                                    }
-                                } 
-                            } 
+                            }
                         }
-                        
-                        System.out.println(temp);
                         
                         for(int i=0;i<listModel.getSize();i++){                          
                             deviceObject current = listModel.getElementAt(i);
@@ -402,23 +409,20 @@ public class seleniumFrame extends javax.swing.JFrame {
                                 break;
                             }
                         }
-                        //newMap.put("BD", el);
+
                     }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Data Erasure Report")){
-                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-                        for (int i=0;i<el.size();i++) {
-                            if(oFrame.getERFieldsListArray().contains(el.get(i).getText())){
-                                if(el.get(i).getText().equals("Serial:")){
-                                    if(el.get(i+1).getText().equals(serials)){
-                                        if(!temp.containsKey(el.get(i).getText().trim())){
-                                            temp.put(el.get(i).getText(),el.get(i+1).getText());
-                                        }
-                                    }
+                        temp = new LinkedHashMap<Object,Object>();
+                        
+                        for(Object item:oFrame.getERFieldsListArray()){
+                            if(elements.contains(item)){
+                                if(elements.get(elements.indexOf(item)).equals("Serial:")){
+                                    temp.put(elements.get(elements.indexOf(item)),serials);   
                                 }else{
-                                    if(!temp.containsKey(el.get(i).getText().trim())){
-                                        temp.put(el.get(i).getText(),el.get(i+1).getText());
+                                    if(!temp.containsKey(elements.get(elements.indexOf(item)))){
+                                        temp.put(elements.get(elements.indexOf(item)),elements.get(elements.indexOf(item)+1));
                                     }
                                 }
-                            } 
+                            }
                         }
                         
                         System.out.println(temp);
@@ -430,29 +434,23 @@ public class seleniumFrame extends javax.swing.JFrame {
                                 break;
                             }
                         }
-                        //newMap.put("ER", el);
+
                     }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Factory Reset Report")){
-                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-                        for (int i=0;i<el.size();i++) {
-                            if(oFrame.getFRFieldsListArray().contains(el.get(i).getText())){
-                                if(!el.get(i+1).getText().contains(el.get(i).getText())){
-                                    if(el.get(i).getText().equals("Serial:")){
-                                        if(el.get(i+1).getText().equals(serials)){
-                                            if(!temp.containsKey(el.get(i).getText().trim())){
-                                                temp.put(el.get(i).getText(),el.get(i+1).getText());
-                                            }
-                                        }
-                                    }else{
-                                        if(!temp.containsKey(el.get(i).getText().trim())){
-                                            temp.put(el.get(i).getText(),el.get(i+1).getText());
-                                        }
+                        temp = new LinkedHashMap<Object,Object>();
+                        
+                        for(Object item:oFrame.getFRFieldsListArray()){
+                            if(elements.contains(item)){
+                                if(elements.get(elements.indexOf(item)).equals("Serial:")){
+                                    temp.put(elements.get(elements.indexOf(item)),serials);   
+                                }else{
+                                    if(!temp.containsKey(elements.get(elements.indexOf(item)))){
+                                        temp.put(elements.get(elements.indexOf(item)),elements.get(elements.indexOf(item)+1));
                                     }
                                 }
-                                
-                            } 
+                            }
                         }
                         
-                        System.out.println(temp);
+                        //System.out.println(temp);
                         
                         for(int i=0;i<listModel.getSize();i++){                          
                             deviceObject current = listModel.getElementAt(i);
@@ -461,201 +459,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                                 break;
                             }
                         }
-                        //newMap.put("FR", el);
                     }
-
-//                    if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Hardware Report")){
-//                        //title
-//                        System.out.println("BD Info");
-//                        //first section
-//                        String serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
-//                            String serialN;
-//                            String modelL;
-//                            String modelN;                      
-//                            String erasureL;
-//                            String erasureN;
-//                            String fingerprintL;
-//                            String fingerprintN;
-//                            String wirelessChgL;
-//                            String wirelessChgN;
-//                            String faceIDL;
-//                            String faceIDN; 
-//  
-//                        if(driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim().equals("Origin:")){
-//                            serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
-//                            serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
-//                            modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-//                            modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
-//                            erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
-//                            erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
-//                            fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
-//                            fingerprintN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
-//                            wirelessChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[4]/div[1]")).getText().trim();
-//                            wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[5]/div[2]")).getText().trim();
-//                            faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
-//                            faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
-//
-//                        }else{
-//                            serialL = driver.findElement(By.xpath("//*[text() = 'Serial:']")).getText().trim();
-//                            serialN = driver.findElement(By.xpath("//*[text() = '"+serials+"']")).getText().trim();
-//                            modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-//                            modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();                        
-//                            erasureL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
-//                            erasureN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
-//                       
-//                            fingerprintL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[1]")).getText().trim();
-//                            fingerprintN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[2]/div[2]")).getText().trim();
-//                            wirelessChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[1]")).getText().trim();
-//                            wirelessChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[3]/div[2]")).getText().trim();
-//                            faceIDL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[1]")).getText().trim();
-//                            faceIDN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[1]/div[2]")).getText().trim();
-//            
-//                        }
-//                        
-//                        //first column
-//                        String wifiL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[1]/div[1]")).getText().trim();
-//                        String wifiN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[1]/div[2]/div")).getText().trim();
-//                        String batteryChgL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[3]/div[1]")).getText().trim();
-//                        String batteryChgN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[3]/div[2]/div")).getText().trim();
-//                        String touchL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[5]/div[1]")).getText().trim();
-//                        String touchN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[5]/div[2]/div")).getText().trim();
-//                        String proximityL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[7]/div[1]")).getText().trim(); 
-//                        String proximityN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[7]/div[2]/div")).getText().trim();
-//                        String vibrationL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[9]/div[1]")).getText().trim();
-//                        String vibrationN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[9]/div[2]/div")).getText().trim();
-//                        String volumeL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[11]/div[1]")).getText().trim();
-//                        String volumeN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[11]/div[2]/div")).getText().trim();
-//                        String screenL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[13]/div[1]")).getText().trim();
-//                        String screenN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[13]/div[2]/div")).getText().trim();
-//                        String fCameraL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[15]/div[1]")).getText().trim();
-//                        String fCameraN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[15]/div[2]/div")).getText().trim();
-//                        String batteryWearL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[17]/div[1]")).getText().trim();
-//                        String batteryWearN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[17]/div[2]/div")).getText().trim();
-//                        //second column
-//                        String speakerL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[2]/div[1]")).getText().trim();
-//                        String speakerN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[2]/div[2]/div")).getText().trim();
-//                        String lcdColorL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[4]/div[1]")).getText().trim();
-//                        String lcdColorN =driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[4]/div[2]/div")).getText().trim();
-//                        String lcdBackL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[6]/div[1]")).getText().trim();
-//                        String lcdBackN =driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[6]/div[2]/div")).getText().trim();
-//                        String usbL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[8]/div[1]")).getText().trim();
-//                        String usbN =driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[8]/div[2]/div")).getText().trim();
-//                        String homekeyL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[10]/div[1]")).getText().trim();
-//                        String homekeyN =driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[10]/div[2]/div")).getText().trim();
-//                        String screenLockL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[12]/div[1]")).getText().trim();
-//                        String screenLockN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[12]/div[2]/div")).getText().trim();
-//                        String cameraL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[14]/div[1]")).getText().trim();
-//                        String cameraN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[14]/div[2]/div")).getText().trim();
-//                        String multiTouchL = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[16]/div[1]")).getText().trim();
-//                        String multiTouchN = driver.findElement(By.xpath("/html/body/div/div[2]/div[6]/div[16]/div[2]/div")).getText().trim();
-//                        
-//
-//                        String overallL = driver.findElement(By.xpath("/html/body/div/div[2]/div[7]/div/div[1]/b")).getText().trim();
-//                        String overallN = driver.findElement(By.xpath("/html/body/div/div[2]/div[7]/div/div[2]/b/div")).getText().trim();
-//                        
-//                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-//                        temp.put(modelL, modelN);
-//                        temp.put(serialL, serialN);
-//                        temp.put(erasureL, erasureN);
-//                        temp.put(fingerprintL, fingerprintN);
-//                        temp.put(wirelessChgL, wirelessChgN);
-//                        temp.put(faceIDL, faceIDN);
-//                        //temp.put(headphoneL, headphoneN);
-//                        
-//                        temp.put(wifiL, wifiN);
-//                        temp.put(batteryChgL, batteryChgN);
-//                        temp.put(touchL, touchN);
-//                        temp.put(proximityL, proximityN);
-//                        temp.put(vibrationL, vibrationN);
-//                        temp.put(volumeL, volumeN);
-//                        temp.put(screenL, screenN);
-//                        temp.put(fCameraL, fCameraN);
-//                        temp.put(batteryWearL, batteryWearN);
-//                        
-//                        temp.put(speakerL, speakerN);
-//                        temp.put(lcdColorL, lcdColorN);
-//                        temp.put(lcdBackL, lcdBackN);
-//                        temp.put(usbL, usbN);
-//                        temp.put(homekeyL, homekeyN);
-//                        temp.put(screenLockL, screenLockN);
-//                        temp.put(cameraL, cameraN);
-//                        temp.put(multiTouchL, multiTouchN);
-//                        //temp.put(btmMicL, btmMicN);
-//
-//                        for(int i=0;i<listModel.getSize();i++){                          
-//                            deviceObject current = listModel.getElementAt(i);
-//                            if(current.getName().equals(serialN)){
-//                                current.getElementMap().put("BD", temp);
-//                                break;
-//                            }
-//                        }
-//
-//                    }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Data Erasure Report")){
-//                        
-//                        System.out.println("Erasure Info");
-//                        
-//                        String erasureTechL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
-//                        String erasureTechN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
-//                        String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-//                        String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();
-//                        String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim();
-//                        String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]")).getText().trim();
-//                        if(!serialL.equals("Serial:")){
-//                            serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
-//                            serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();        
-//                        }
-//                        String statusL,statusN;
-//                        if(driver.findElements(By.xpath("/html/body/div/div[2]/div[3]/div[9]")).size()>0){
-//                           statusL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[9]")).getText().trim(); 
-//                           statusN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[10]/span")).getText().trim();
-//                        }else{
-//                            statusL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[9]")).getText().trim(); 
-//                            statusN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[10]/span")).getText().trim();
-//                        }
-//
-//                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-//                        
-//                        temp.put(erasureTechL, erasureTechN);
-//                        temp.put(modelL, modelN);
-//                        temp.put(serialL, serialN);
-//                        temp.put(statusL, statusN);
-//                        
-//                        for(int i=0;i<listModel.getSize();i++){                          
-//                            deviceObject current = listModel.getElementAt(i);
-//                            if(current.getName().equals(serialN)){
-//                                current.getElementMap().put("ER", temp);
-//                                break;
-//                            }
-//                        }
-//                        
-//                    }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals("Factory Reset Report")){
-//                        
-//                        System.out.println("Factory Reset ER Info");
-//                        
-//                        String erasureTechL = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[1]")).getText().trim();
-//                        String erasureTechN = driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/div[2]")).getText().trim();
-//                        String modelL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[5]")).getText().trim();
-//                        String modelN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[6]")).getText().trim();
-//                        String serialL = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[7]")).getText().trim();
-//                        String serialN = driver.findElement(By.xpath("/html/body/div/div[2]/div[4]/div[8]")).getText().trim();
-//                        String statusL = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[9]")).getText().trim();
-//                        String statusN = driver.findElement(By.xpath("/html/body/div/div[2]/div[3]/div[10]/span")).getText().trim();
-//                        
-//                        LinkedHashMap<Object,Object> temp = new LinkedHashMap<Object,Object>();
-//                        
-//                        temp.put(erasureTechL, erasureTechN);
-//                        temp.put(modelL, modelN);
-//                        temp.put(serialL, serialN);
-//                        temp.put(statusL, statusN);
-//                        
-//                        for(int i=0;i<listModel.getSize();i++){                          
-//                            deviceObject current = listModel.getElementAt(i);
-//                            if(current.getName().equals(serialN)){
-//                                current.getElementMap().put("FR", temp);
-//                                break;
-//                            }
-//                        }  
-//                    }
 
                     driver.close();
                 }
