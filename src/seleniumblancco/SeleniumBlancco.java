@@ -27,6 +27,7 @@ public class SeleniumBlancco {
     
     public static void main(String[] args) {
         // TODO code application logic here
+        DatabaseObj db = new DatabaseObj();
         seleniumFrame frame = new seleniumFrame();
         frame.run();
         

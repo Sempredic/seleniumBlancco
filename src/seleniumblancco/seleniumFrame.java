@@ -8,7 +8,10 @@ package seleniumblancco;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import static java.lang.Thread.sleep;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
@@ -44,7 +49,14 @@ public class seleniumFrame extends javax.swing.JFrame {
     LinkedHashMap<String,ArrayList> newMap;
     ArrayList<WebElement> el;
     ArrayList elements;
+    ArrayList<LinkedHashMap<Object,ArrayList<WebElement>>> elementList;
     LinkedHashMap<Object,Object> temp;
+    LinkedHashMap<String,String> login;
+    Date date;
+    Date yDate;
+    SimpleDateFormat sdf;
+    Calendar cal;
+    
     
     public seleniumFrame() {
         listModel = new DefaultListModel<>();
@@ -60,7 +72,17 @@ public class seleniumFrame extends javax.swing.JFrame {
         el = new ArrayList<WebElement>();
         elements = new ArrayList();
         temp = new LinkedHashMap<Object,Object>();
-
+        login = new LinkedHashMap<String,String>();
+        elementList = new ArrayList<LinkedHashMap<Object,ArrayList<WebElement>>>();
+        date = new Date();
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        cal = Calendar.getInstance();
+        yDate = new Date();
+        
+        cal.setTime(yDate);
+        cal.add(Calendar.DATE, -1);
+        //System.out.println(sdf.format(cal.getTime()));
+ 
     }
 
     /**
@@ -243,11 +265,18 @@ public class seleniumFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_serialNumberFieldActionPerformed
 
+    private void populateLogin(){
+        DatabaseObj.getUserQuery();
+        login = DatabaseObj.getLogin();
+  
+    }
     private void serialNumberFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serialNumberFieldKeyPressed
         // TODO add your handling code here:
         int keyCode = evt.getKeyCode();
         if(keyCode == KeyEvent.VK_ENTER){
             
+            populateLogin();
+
             if(serialNumberField.getText().trim().toUpperCase().equals("VALIDATE")){
                 if(!oFrame.getOReportOptionState()){
                     runSelenium();
@@ -262,7 +291,6 @@ public class seleniumFrame extends javax.swing.JFrame {
                     listModel.addElement(new deviceObject(serialNumberField.getText()));
                     serialNumberField.setText("");
                 }
-                
             }
         }
     }//GEN-LAST:event_serialNumberFieldKeyPressed
@@ -284,21 +312,21 @@ public class seleniumFrame extends javax.swing.JFrame {
         if(!device.getElementMap().isEmpty()){
             for(Map.Entry<Object,LinkedHashMap<Object,Object>> item:device.getElementMap().entrySet()){
                 if(item.getKey().equals("BD")){
-                    builder.append("BD REPORT \n");
+                    builder.append("==BD REPORT== \n");
                     builder.append("\n");
                     for(Object crit:item.getValue().entrySet()){
                         builder.append(crit+"\n");
                     }
                     builder.append("\n");
                 }else if(item.getKey().equals("ER")){
-                    builder.append("ERASURE REPORT \n");
+                    builder.append("==ERASURE REPORT== \n");
                     builder.append("\n");
                     for(Object crit:item.getValue().entrySet()){
                         builder.append(crit+"\n");
                     }
                     builder.append("\n");
                 }else if(item.getKey().equals("FR")){
-                    builder.append("FACTORY REPORT \n");
+                    builder.append("==FACTORY REPORT== \n");
                     builder.append("\n");
                     for(Object crit:item.getValue().entrySet()){
                         builder.append(crit+"\n");
@@ -335,8 +363,8 @@ public class seleniumFrame extends javax.swing.JFrame {
         
         driver.get("https://cloud.blancco.com/login");
         
-        driver.findElement(By.id("login_usernameInput")).sendKeys("PreOwned");
-        driver.findElement(By.id("login_passwordInput")).sendKeys("Welcome123!");
+        driver.findElement(By.id("login_usernameInput")).sendKeys(login.get("Username"));
+        driver.findElement(By.id("login_passwordInput")).sendKeys(login.get("Password"));
         driver.findElement(By.id("login_passwordInput")).sendKeys(Keys.RETURN);
         
         // get original current tab and store it
@@ -348,7 +376,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 System.out.println("Input Started");
                 
-                driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
+                //driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
                 driver.findElement(By.id("reportFiltering_searchInput")).clear();
                 driver.findElement(By.id("reportFiltering_searchInput")).sendKeys((String)serials);
                 sleep(1000);
@@ -357,17 +385,32 @@ public class seleniumFrame extends javax.swing.JFrame {
                 sleep(3000);
                 
                 System.out.println("View Started");
-             
-                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("0 reports")){
-                    continue;
-                }
+               
+                LinkedHashMap reportMap = new LinkedHashMap<String,String>();
                 
-                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("1 reports")){
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
-                }else{
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[2]/td[2]/div/div/a[1]")).click();
-                }
+                WebElement table = driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table"));
+
+                List<WebElement> tr = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(table, By.tagName("tr")));
+                                               
+                for(WebElement we:tr){
+
+                    if(we.getText().contains(sdf.format(date))||we.getText().contains(sdf.format(cal.getTime()))){
+                        //System.out.println(we.getText());
+                        String report = we.getText();
+                        report = report.replaceAll("View", "");
+                        if(we.getText().contains("successful")){
+                            we.findElement(By.linkText("View")).click();
+                            reportMap.put("successful", report);
+                        }else if(we.getText().contains("Successful")){
+                            we.findElement(By.linkText("View")).click();
+                            reportMap.put("Successful", report);
+                        }else if(we.getText().contains("failed")){
+                            we.findElement(By.linkText("View")).click();
+                            reportMap.put("failed", report);
+                        }
+                    }
+                    
+                };
                 
                 sleep(1000);
 
@@ -384,18 +427,26 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp = new LinkedHashMap<Object,Object>();
                         
                         String string = driver.findElement(By.xpath("/html/body/div/div[1]/div")).getText();
-                        System.out.println(string);
+                        //System.out.println(string);
                         if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
+                           
+                            if(reportMap.containsKey("successful")){
+                                temp.put("",reportMap.get("successful"));
+                            }else if(reportMap.containsKey("failed")){
+                                temp.put("",reportMap.get("failed"));
+                            }
+
                             temp.put("Serial:", serials);
+                            
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("BD", temp);
                                     break;
                                 }
                             }  
                         }
-                        
                         
                     }else if(driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/h1")).getText().trim().equals(
                             "Data Erasure Report")){
@@ -403,10 +454,16 @@ public class seleniumFrame extends javax.swing.JFrame {
                         temp = new LinkedHashMap<Object,Object>();
                         
                         if(driver.findElements(By.xpath("//*[contains(text(), '"+serials+"')]")).size()>0){
+                            if(reportMap.containsKey("successful")){
+                                temp.put("",reportMap.get("successful"));
+                            }else if(reportMap.containsKey("failed")){
+                                temp.put("",reportMap.get("failed"));
+                            }
                             temp.put("Serial:", serials);
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("ER", temp);
                                     break;
                                 }
@@ -414,19 +471,31 @@ public class seleniumFrame extends javax.swing.JFrame {
                         }
                         
                         if(driver.findElements(By.xpath("//*[contains(text(), 'Erased')]")).size()>0){
+                            if(reportMap.containsKey("successful")){
+                                temp.put("",reportMap.get("successful"));
+                            }else if(reportMap.containsKey("failed")){
+                                temp.put("",reportMap.get("failed"));
+                            }
                             temp.put("Status:", "Erased");
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("ER", temp);
                                     break;
                                 }
                             }
                         }else{
+                            if(reportMap.containsKey("successful")){
+                                temp.put("",reportMap.get("successful"));
+                            }else if(reportMap.containsKey("failed")){
+                                temp.put("",reportMap.get("failed"));
+                            }
                             temp.put("Status:", "Failed");
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("ER", temp);
                                     break;
                                 }
@@ -443,6 +512,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("FR", temp);
                                     break;
                                 }
@@ -454,6 +524,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("ER", temp);
                                     break;
                                 }
@@ -463,6 +534,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                             for(int i=0;i<listModel.getSize();i++){                          
                                 deviceObject current = listModel.getElementAt(i);
                                 if(current.getName().equals(temp.get("Serial:"))){
+                                    temp.remove("Serial:");
                                     current.getElementMap().put("ER", temp);
                                     break;
                                 }
@@ -487,6 +559,8 @@ public class seleniumFrame extends javax.swing.JFrame {
         validateSerialObjects();
         
     }
+    
+   
     private void runSelenium(){
          
         driver = new ChromeDriver(chromeOptions);
@@ -495,13 +569,13 @@ public class seleniumFrame extends javax.swing.JFrame {
         
         driver.get("https://cloud.blancco.com/login");
         
-        driver.findElement(By.id("login_usernameInput")).sendKeys("PreOwned");
-        driver.findElement(By.id("login_passwordInput")).sendKeys("Welcome123!");
+        driver.findElement(By.id("login_usernameInput")).sendKeys(login.get("Username"));
+        driver.findElement(By.id("login_passwordInput")).sendKeys(login.get("Password"));
         driver.findElement(By.id("login_passwordInput")).sendKeys(Keys.RETURN);
         
         // get original current tab and store it
         String oldTab = driver.getWindowHandle();
-
+        
         try{
             
             for(Object serials:serialListArray){
@@ -518,16 +592,13 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 System.out.println("View Started");
              
-                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("0 reports")){
-                    continue;
-                }
+                WebElement tableProducts = driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table"));
+
+                List<WebElement> tableRows = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(tableProducts, By.tagName("tr")));
                 
-                if(driver.findElement(By.xpath("//*[@id=\"reporting_reportingPagination_reportCount\"]")).getText().trim().equals("1 reports")){
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
-                }else{
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[1]/td[2]/div/div/a[1]")).click();
-                    driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table/tbody/tr[2]/td[2]/div/div/a[1]")).click();
-                }
+                for(WebElement we:tableRows){
+                    we.findElement(By.linkText("View")).click();
+                };
                 
                 sleep(1000);
 
