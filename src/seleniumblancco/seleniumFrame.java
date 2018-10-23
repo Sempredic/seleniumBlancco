@@ -582,7 +582,7 @@ public class seleniumFrame extends javax.swing.JFrame {
                 
                 System.out.println("Input Started");
                 
-                driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
+                //driver.findElement(By.id("reporting_processArea_customView_PreOwnedTech")).click();
                 driver.findElement(By.id("reportFiltering_searchInput")).clear();
                 driver.findElement(By.id("reportFiltering_searchInput")).sendKeys((String)serials);
                 sleep(1000);
@@ -595,9 +595,21 @@ public class seleniumFrame extends javax.swing.JFrame {
                 WebElement tableProducts = driver.findElement(By.xpath("//*[@id=\"reporting_table\"]/div[3]/div/div[2]/div/div/table"));
 
                 List<WebElement> tableRows = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfNestedElementsLocatedBy(tableProducts, By.tagName("tr")));
-                
+               
                 for(WebElement we:tableRows){
-                    we.findElement(By.linkText("View")).click();
+                    //we.findElement(By.linkText("View")).click();
+                    String report = we.getText();
+                        report = report.replaceAll("View", "");
+                        if(we.getText().contains("successful")){
+                            we.findElement(By.linkText("View")).click();
+                            //reportMap.put("successful", report);
+                        }else if(we.getText().contains("Successful")){
+                            we.findElement(By.linkText("View")).click();
+                            //reportMap.put("Successful", report);
+                        }else if(we.getText().contains("failed")){
+                            we.findElement(By.linkText("View")).click();
+                            //reportMap.put("failed", report);
+                        }
                 };
                 
                 sleep(1000);
